@@ -145,6 +145,7 @@ var chaincodeID;
 					app_user.getName() + ".\n");
 
 					// Deploy a chaincode with the new user
+<<<<<<< HEAD
 					console.log()
 					if(deployed==1)
 					{
@@ -152,6 +153,12 @@ var chaincodeID;
 
 						console.log("here");
 							deploychaincode();
+=======
+					console.log("Deploying chaincode now...");
+					if(deployed==1)
+					{
+						deployChaincode();
+>>>>>>> 96d98d76ab54885af478632987b421b811fb7d59
 						deployed=2;
 
 					}
@@ -190,9 +197,13 @@ var deployRequest = {
 		"error=%j", deployRequest, err));
 		process.exit(1);
 	});
+<<<<<<< HEAD
 
 }
+=======
+>>>>>>> 96d98d76ab54885af478632987b421b811fb7d59
 
+}
 
 var chaincode={
 	enrolluser:enrolluser
@@ -200,4 +211,8 @@ var chaincode={
 };
 
 
+<<<<<<< HEAD
 module.exports=chaincode;
+=======
+module.exports=chaincode;
+>>>>>>> 96d98d76ab54885af478632987b421b811fb7d59
