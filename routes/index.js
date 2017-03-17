@@ -2,14 +2,18 @@ var express = require('express');
 var router = express.Router();
 var hfcutil=require('../backend/chaincode');
 // Get Homepage
+var chaincodeID;
+var util=require('util');
 router.get('/', ensureAuthenticated, function(req, res){
-	res.render('index');
+
 	console.log(req.user.username);
 	hfcutil.enrolluser(req.user.username);
-
+	chaincodeID=hfcutil.chaincodeID;
+	console.log(chaincodeID);
+	res.render('index');
 
 });
-app.post('/transactions', function(req, res) {
+router.post('/transactions', function(req, res) {
 	// Amount to transfer
 	var amount = req.body.amount.toString();
 	console.log("amount"+amount);
@@ -24,8 +28,16 @@ app.post('/transactions', function(req, res) {
 		args: [req.user.username, amount]
 	};
 
+hfcutil.chain.getMember(req.user.username,  function(error, user) {
+                if (error)
+                    reject(" Failed to register and enroll " + userName + ": " + error);
+
+                console.log("Enrolled %s successfully\n");
+                console.log("invoke chaincode ...");
 	// Trigger the invoke transaction
-	var invokeTx = req.user.username.invoke(invokeRequest);
+	var invokeTx = user.invoke(invokeRequest);
+	// Trigger the invoke transaction
+//	var invokeTx = req.user.username.invoke(invokeRequest);
 
 	// Invoke transaction submitted successfully
 	invokeTx.on('submitted', function (results) {
@@ -43,6 +55,7 @@ app.post('/transactions', function(req, res) {
 
 		res.status(500).json({ error: errorMsg });
 	});
+});
 });
 router.get('/last',function(req,res){
 

@@ -195,8 +195,9 @@ var deployRequest = {
 
 
 var chaincode={
-	enrolluser:enrolluser
-	
+	enrolluser:enrolluser,
+	chaincodeID:chaincodeID,
+	chain:chain
 };
 
 
