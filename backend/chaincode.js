@@ -33,6 +33,7 @@ var chain = hfc.newChain("testChain");
 //
 // Configure the chain settings
 //
+var deployed=1;
 
 // Set the location of the KeyValueStore
 console.log("Setting keyValStore location to: " + SDK_KEYSTORE);
@@ -79,36 +80,6 @@ var app_user;
 // chaincodeID will store the chaincode ID value after deployment which is
 // later used to execute invocations and queries
 var chaincodeID;
-
-
-var deployRequest = {
-		// Path (under $GOPATH/src) required for deploy in network mode
-		chaincodePath: "crowd_fund_chaincode" ,
-		// Function to trigger
-		
-		fcn: "init",
-		// Arguments to the initializing function
-		args: ["account","0"]
-	};
-
-	// Trigger the deploy transaction
-	var deployTx = app_user.deploy(deployRequest);
-
-	// Print the successfull deploy results
-	deployTx.on('complete', function (results) {
-		// Set the chaincodeID for subsequent tests
-		chaincodeID = results.chaincodeID;
-		console.log(util.format("Successfully deployed chaincode: request=%j, " +
-		"response=%j" + "\n", deployRequest, results));
-		// The chaincode is successfully deployed, start the listener port
-		 //startListener();
-	});
-	deployTx.on('error', function (err) {
-		// Deploy request failed
-		console.log(util.format("ERROR: Failed to deploy chaincode: request=%j, " +
-		"error=%j", deployRequest, err));
-		process.exit(1);
-	});
 
 
 	function enrolluser(username)
@@ -175,17 +146,53 @@ var deployRequest = {
 
 					// Deploy a chaincode with the new user
 					console.log("Deploying chaincode now...");
-					deployChaincode()
+					if(deployed==1)
+					{
+						deployChaincode();
+						deployed=2;
+
+					}
 				}
 			});
 		}
 	});
 }
+function deploychaincode()
+{
+var deployRequest = {
+		// Path (under $GOPATH/src) required for deploy in network mode
+		chaincodePath: "crowd_fund_chaincode" ,
+		// Function to trigger
+		
+		fcn: "init",
+		// Arguments to the initializing function
+		args: ["account","0"]
+	};
 
+	// Trigger the deploy transaction
+	var deployTx = app_user.deploy(deployRequest);
 
-var hfcUtil={
+	// Print the successfull deploy results
+	deployTx.on('complete', function (results) {
+		// Set the chaincodeID for subsequent tests
+		chaincodeID = results.chaincodeID;
+		console.log(util.format("Successfully deployed chaincode: request=%j, " +
+		"response=%j" + "\n", deployRequest, results));
+		// The chaincode is successfully deployed, start the listener port
+		 //startListener();
+	});
+	deployTx.on('error', function (err) {
+		// Deploy request failed
+		console.log(util.format("ERROR: Failed to deploy chaincode: request=%j, " +
+		"error=%j", deployRequest, err));
+		process.exit(1);
+	});
+
+}
+
+var chaincode={
 	enrolluser:enrolluser
 };
 
 
-module.exports=hfcUtil;
+module.exports=chaincode;
