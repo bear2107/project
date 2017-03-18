@@ -6,26 +6,29 @@ var chaincodeID;
 var util=require('util');
 router.get('/', ensureAuthenticated, function(req, res){
 
-	console.log(req.user.username);
+	//console.log(req.user.username);
 	hfcutil.enrolluser(req.user.username);
-	chaincodeID=hfcutil.chaincodeID;
-	console.log(chaincodeID);
+	//chaincodeID=hfcutil.chaincodeID;
+	//console.log(chaincodeID);
 	res.render('index');
 
 });
+var counts;
 router.post('/transactions', function(req, res) {
 	// Amount to transfer
 	var amount = req.body.amount.toString();
 	console.log("amount"+amount);
 	// Construct the invoke request
 	//hfcUtil.enrolluser(req.user.username);
+	count(req.user.username);
+	chaincodeID=hfcutil.chains();
 	var invokeRequest = {
 		// Name (hash) required for invoke
 		chaincodeID: chaincodeID,
 		// Function to trigger
 		fcn: "invoke",
 		// Parameters for the invoke function
-		args: [req.user.username, amount]
+		args: [req.user.username, counts+1]
 	};
 
 hfcutil.chain.getMember(req.user.username,  function(error, user) {
@@ -74,4 +77,56 @@ function ensureAuthenticated(req, res, next){
 	}
 }
 
+function count(username)
+{
+
+
+	// State variable to retrieve
+	var stateVar = username;
+
+	// Construct the query request
+	var queryRequest = {
+		// Name (hash) required for query
+		chaincodeID: chaincodeID,
+		// Function to trigger
+		fcn: "query",
+		// State variable to retrieve
+		args: [stateVar]
+	};
+	hfcutil.chain.getMember(req.user.username,  function(error, user) {
+                if (error)
+                    reject(" Failed to register and enroll " + userName + ": " + error);
+
+                console.log("Enrolled %s successfully\n");
+                console.log("invoke chaincode ...");
+	// Trigger the invoke transaction
+	var queryTx = user.invoke(queryRequest);
+	// Trigger the invoke transaction
+	// Trigger the query transaction
+	//var queryTx = app_user.query(queryRequest);
+
+	// Query completed successfully
+	queryTx.on('complete', function (results) {
+		console.log(util.format("Successfully queried existing chaincode state: " +
+		"request=%j, response=%j, value=%s", queryRequest, results, results.result.toString()));
+		if(results.result.toString()=="")
+			counts=0;
+		else
+			counts=num(results.result.toString());
+		//res.status(200).json({ "value": results.result.toString() });
+	});
+	// Query failed
+	queryTx.on('error', function (err) {
+		var errorMsg = util.format("ERROR: Failed to query existing chaincode " +
+		"state: request=%j, error=%j", queryRequest, err);
+
+		console.log(errorMsg);
+
+	//	res.status(500).json({ error: errorMsg });
+	});
+
+
+
+});
+}
 module.exports = router;
