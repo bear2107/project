@@ -207,4 +207,8 @@ var chaincode={
 };
 
 
+<<<<<<< HEAD
 module.exports=chaincode;
+=======
+module.exports=chaincode;
+>>>>>>> 4e0158615d09b59e5ecaa021769ec16d6bf53099
