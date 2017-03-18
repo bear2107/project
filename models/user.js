@@ -16,6 +16,13 @@ var UserSchema = mongoose.Schema({
 	name: {
 		type: String
 	}
+	,
+	count: {
+
+		type:Number
+
+
+	}
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);

@@ -76,11 +76,14 @@ chain.setDevMode(false);
 
 // User object returned after registration and enrollment
 var app_user;
-
+var x;
 // chaincodeID will store the chaincode ID value after deployment which is
 // later used to execute invocations and queries
 var chaincodeID;
-
+function chains()
+{
+	x=chaincodeID;
+}
 
 	function enrolluser(username)
 	{
@@ -106,14 +109,14 @@ var chaincodeID;
 				console.log("Setting WebAppAdmin as chain registrar.");
 				chain.setRegistrar(admin);
 
-				// Register a new user with WebAppAdmin as the chain registrar
-				console.log("Registering user `WebAppUser_1`.");
+				// Register a new user with WebAppAdmin as the chain registrarre
 				registerUser(username);
 			}
 		});
 		//chain.setRegistrar("admin");
 		//		registerUser("WebApp_user1");
 	}
+//return chaincodeID;
 });
 
 
@@ -145,7 +148,6 @@ var chaincodeID;
 					app_user.getName() + ".\n");
 
 					// Deploy a chaincode with the new user
-<<<<<<< HEAD
 					console.log()
 					if(deployed==1)
 					{
@@ -153,12 +155,6 @@ var chaincodeID;
 
 						console.log("here");
 							deploychaincode();
-=======
-					console.log("Deploying chaincode now...");
-					if(deployed==1)
-					{
-						deployChaincode();
->>>>>>> 96d98d76ab54885af478632987b421b811fb7d59
 						deployed=2;
 
 					}
@@ -166,6 +162,7 @@ var chaincodeID;
 			});
 		}
 	});
+
 }
 function deploychaincode()
 {
@@ -188,6 +185,7 @@ var deployRequest = {
 		chaincodeID = results.chaincodeID;
 		console.log(util.format("Successfully deployed chaincode: request=%j, " +
 		"response=%j" + "\n", deployRequest, results));
+		//return chaincodeID;
 		// The chaincode is successfully deployed, start the listener port
 		 //startListener();
 	});
@@ -197,22 +195,16 @@ var deployRequest = {
 		"error=%j", deployRequest, err));
 		process.exit(1);
 	});
-<<<<<<< HEAD
 
 }
-=======
->>>>>>> 96d98d76ab54885af478632987b421b811fb7d59
 
-}
 
 var chaincode={
-	enrolluser:enrolluser
-	
+	enrolluser:enrolluser,
+	chaincodeID:chaincodeID,
+	chain:chain,
+	chains:chains
 };
 
 
-<<<<<<< HEAD
 module.exports=chaincode;
-=======
-module.exports=chaincode;
->>>>>>> 96d98d76ab54885af478632987b421b811fb7d59

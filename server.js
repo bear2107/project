@@ -11,7 +11,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
 var test=require('./test');
-mongoose.connect('mongodb://localhost/loginapp');
+mongoose.connect('mongodb://localhost/latest');
 var db = mongoose.connection;
 
 var routes = require('./routes/index');
@@ -84,5 +84,5 @@ app.use('/last',routes);
 app.set('port', (process.env.PORT || 3000));
 
 app.listen(app.get('port'), function(){
-	console.log('Server started on port '+app.get('port'));
+  console.log('Server started on port '+app.get('port'));
 });
