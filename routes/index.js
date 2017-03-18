@@ -12,8 +12,25 @@ router.get('/', ensureAuthenticated, function(req, res){
 	hfcutil.enrolluser(req.user.username);
 	//chaincodeID=hfcutil.chaincodeID;
 	//console.log(chaincodeID);
+	if(req.user.username=="admin")
+		res.redirect('/view')
+	else
 	res.render('index');
 
+});
+router.get('/view', function(req, res){
+	User.find({}, function(err, docs){
+		if(err) res.json(err);
+		else   {
+
+
+			res.render('view', {users:docs});
+			//console.log(users[0]);
+			
+
+
+	}
+	});
 });
 var counts;
 router.post('/transactions', function(req, res) {
@@ -22,7 +39,7 @@ router.post('/transactions', function(req, res) {
 	console.log("amount"+amount);
 
 	// Construct the invoke request
-	//hfcUtil.enrolluser(req.user.username);
+	hfcUtil.enrolluser(req.user.username);
 	//count(req.user.username);
 	//chaincodeID=hfcutil.chains();
 	var invokeRequest = {
