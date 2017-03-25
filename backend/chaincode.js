@@ -208,3 +208,4 @@ var chaincode={
 
 
 
+module.exports=chaincode;

@@ -1,4 +1,7 @@
 var express = require('express');
+var fs=require('fs');
+var http=require('http');
+var https=require('https');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -13,7 +16,14 @@ var mongoose = require('mongoose');
 var test=require('./test');
 mongoose.connect('mongodb://localhost/latest');
 var db = mongoose.connection;
-
+var pkey=fs.readFileSync('key.pem','utf8');
+var pcert=fs.readFileSync('cert.pem','utf8');
+console.log(pkey);
+console.log(pcert);
+var options={
+key:pkey,
+cert:pcert
+};
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -81,8 +91,12 @@ app.use('/users', users);
 app.use('/transactions',routes);
 app.use('/last',routes);
 // Set Port
-app.set('port', (process.env.PORT || 3000));
-
-app.listen(app.get('port'), function(){
-  console.log('Server started on port '+app.get('port'));
-});
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(options, app);
+//app.set('port', (process.env.PORT || 3000));
+httpServer.listen(3000);
+httpsServer.listen(8443);
+console.log('started');
+//app.listen(app.get('port'), function(){
+ // console.log('Server started on port '+app.get('port'));
+//});

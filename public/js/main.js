@@ -1,6 +1,6 @@
 
 $(document).ready(function(){
-
+console.log("working");
 
 
 	$('#reader').html5_qrcode(function(data){

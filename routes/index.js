@@ -15,7 +15,7 @@ router.get('/', ensureAuthenticated, function(req, res){
 	if(req.user.username=="admin")
 		res.redirect('/view')
 	else
-	res.render('index');
+	res.render('test');
 
 });
 router.get('/view', function(req, res){
@@ -39,7 +39,7 @@ router.post('/transactions', function(req, res) {
 	console.log("amount"+amount);
 
 	// Construct the invoke request
-	hfcUtil.enrolluser(req.user.username);
+//	hfcUtil.enrolluser(req.user.username);
 	//count(req.user.username);
 	//chaincodeID=hfcutil.chains();
 	var invokeRequest = {
