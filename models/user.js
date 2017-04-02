@@ -23,6 +23,11 @@ var UserSchema = mongoose.Schema({
 
 
 	}
+	,
+	region:{
+
+		type: Number
+	}
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);

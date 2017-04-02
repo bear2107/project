@@ -7,6 +7,7 @@ var app=express();
 var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('../models/user');
+var Qr=require('../models/admin');
 app.use(session({
     secret: 'secret',
     saveUninitialized: true,
@@ -33,7 +34,7 @@ router.post('/register', function(req, res){
 	var username = req.body.username;
 	var password = req.body.password;
 	var password2 = req.body.password2;
-
+	var region=req.body.region;
 	// Validation
 	req.checkBody('name', 'Name is required').notEmpty();
 	req.checkBody('email', 'Email is required').notEmpty();
@@ -54,7 +55,8 @@ router.post('/register', function(req, res){
 			email:email,
 			username: username,
 			password: password,
-			count:0
+			count:0,
+			region:region
 		});
 
 		User.createUser(newUser, function(err, user){

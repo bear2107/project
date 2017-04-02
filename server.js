@@ -14,10 +14,12 @@ var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
 var test=require('./test');
-mongoose.connect('mongodb://localhost/latest');
+mongoose.connect('mongodb://localhost/ghop');
 var db = mongoose.connection;
 var pkey=fs.readFileSync('key.pem','utf8');
 var pcert=fs.readFileSync('cert.pem','utf8');
+var Qr = require('./models/admin');
+var QrCode=require('./models/region');
 console.log(pkey);
 console.log(pcert);
 var options={

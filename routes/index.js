@@ -2,23 +2,51 @@ var express = require('express');
 var router = express.Router();
 var hfcutil=require('../backend/chaincode');
 // Get Homepage
+var moment=require('moment');
 var chaincodeID="53e365163b5acfb80ab50a6ff4440d7aa6b5b120458d54ed764c71f3fb7cf663";
 var util=require('util');
 var User = require('../models/user');
-
+var random=(Math.floor(Math.random()))%5+1;
+//console.log("random"+random);
+var ran=0;
+var Qr=require('../models/admin');
+var QrCode=require('../models/region');
+var Random =require('../models/random');
+var check=0;
+var duration=0;
+var end=0;
+var me="";
+var checkqr="";
+var area="";
+var Details=require('../models/user_details')
 router.get('/', ensureAuthenticated, function(req, res){
+
 
 	//console.log(req.user.username);
 	hfcutil.enrolluser(req.user.username);
 	//chaincodeID=hfcutil.chaincodeID;
 	//console.log(chaincodeID);
+Random.findOneAndUpdate(
+		{username:req.user.username},
+		{$set:{"start":Math.floor(Math.random()*5)+1, "count":0,"timestamp":new Date()}},
+		{safe: true, upsert: true, new : true},
+        function(err, model) {
+            console.log(err);
+        }
+		    );
 	if(req.user.username=="admin")
 		res.redirect('/view')
 	else
-	res.render('test');
+		
+	res.redirect('/last');
+
+
+
 
 });
 router.get('/view', function(req, res){
+
+
 	User.find({}, function(err, docs){
 		if(err) res.json(err);
 		else   {
@@ -32,23 +60,31 @@ router.get('/view', function(req, res){
 	}
 	});
 });
+router.get('/test',function(req,res)
+{
+console.log("test"+checkqr);
+res.render('test',{checkqrs:checkqr, area:area});
+});
 var counts;
 router.post('/transactions', function(req, res) {
 	// Amount to transfer
+	var xem;
 	var amount = req.body.amount.toString();
-	console.log("amount"+amount);
-
+//	console.log("amount"+amount);
+	var che=req.body.check;
+	console.log("che"+che);
+  var area=req.body.area;
 	// Construct the invoke request
-//	hfcUtil.enrolluser(req.user.username);
+	hfcUtil.enrolluser(req.user.username);
 	//count(req.user.username);
 	//chaincodeID=hfcutil.chains();
-	var invokeRequest = {
+var invokeRequest = {
 		// Name (hash) required for invoke
 		chaincodeID: chaincodeID,
 		// Function to trigger
 		fcn: "invoke",
 		// Parameters for the invoke function
-		args: [req.user.username, amount]
+		args: [req.user.username, amount,req.user.count.toString()]
 	};
 
 hfcutil.chain.getMember(req.user.username,  function(error, user) {
@@ -73,7 +109,74 @@ hfcutil.chain.getMember(req.user.username,  function(error, user) {
     if (err) { return next(err); }
   });
 });
+				//random=random+1;
+		
+				var now=new Date();
+
+				var t=now.getTime();
+				
+			//console.log("t"+t);
+				//now.toLocaleString('de-DE', {hour: '2-digit',   hour12: false, timeZone: 'Asia/Kolkata' })
+			//	d = new Date();
+			//	utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+			//	now = new Date(utc + (3600000*+5.5));
+			//		console.log(now);
+			//	var ist =  now.toLocaleString();
+			//	console.log("IST now is : " +ist);
+			//	var date=new date(ist).toISOString();
+			Random.findOne({username:req.user.username},function(err,docs)
+
+			{
+				if(err)
+				{
+					return next(err);
+				}
+
+				end=docs.timestamp.getTime();
+				duration=t-end;
+
+				if(duration/1000<3000)
+				{
+				console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+					me="yes";
+
+				}
+				else
+				{
+					me="no";
+				}
+				//t="success"
+			//console.log("ll"+duration/1000 + "anse" + me);
+			//console.log("aaaaaaaaaaaaaa"+che);
+			//console.log("amount "+amount);
+			che = che.replace(/\s/g, '');
+			amount = amount.replace(/\s/g, '');
+			if(che===amount)
+				me="yes";
+			else
+				me="no";
+		Details.findOneAndUpdate(
+        {username:req.user.username},
+        {$push: {"details": {codescanned: amount,timestamp:now,success:me,place:area}}},
+        {safe: true, upsert: true, new : true},
+        function(err, model) {
+            console.log(err);
+        }
+    );
+
+
+				//res.redirect('/last');
 		res.status(200).json({ status: "submitted" });
+			
+			});
+//			end=moment
+			//console.log("end"+end+"t"+t);
+			//var 
+		//	var duration = moment.duration(a.diff(end));
+//			console.log("me "+ me);
+
+
 	});
 	// Invoke transaction submission failed
 	invokeTx.on('error', function (err) {
@@ -87,10 +190,91 @@ hfcutil.chain.getMember(req.user.username,  function(error, user) {
 });
 });
 router.get('/last',function(req,res){
+//console.log("here"+ ran);
+/*Details.findOne({username:req.user.username})
+    .select({ "details": { "$slice": -1 }})
+    .exec(function(err,doc) {
+    	//console.log(doc);
+
+    })
+*/
+Random.findOne({username:req.user.username},function(err,user)
+{
+	if(err){
+		return next(err);
+	}
+
+ran=user.start;
+console.log("rankkkk"+ran); 
+check=user.count+1;
+//console.log("check"+(ran%5+1));
+	Random.findOneAndUpdate(
+		{username:req.user.username},
+		{$set:{"start":ran%5 +1 ,"count":user.count+1 }},
+		{safe: true, upsert: true, new : true},
+        function(err, model) {
+            console.log(err);
+        }
+		    );
+
+
+	if(check==6)
+{
+	res.render('completed');
+}
+else
+if(req.user.region==1)
+{
+console.log("random"+ran);
+Qr.findOne({Sno:ran},function(err,user)
+{
+	//if(user.length)
+	//{
+
+	//}
+if (err) { 
+	console.log("here");
+ return next(err);
+}
+if(user)
+{
+	checkqr=user.password;
+	area=user.place;
+		res.render('last',{place:user.place});
+}
+//console.log(user.Sno);
+
+
+});
+}
+else
+QrCode.findOne({Sno:ran},function(err,user)
+{
+	//if(user.length)
+	//{
+
+	//}
+if (err) { 
+	console.log("here");
+ return next(err);
+}
+if(user)
+{
+		checkqr=user.password;
+		area=user.place;
+		res.render('last',{place:user.place});
+}
+
+//console.log(user.Sno);
+
+
+});
 
 
 
-res.render('last');
+});
+//console.log("aaaa"+ran);
+
 
 });
 function ensureAuthenticated(req, res, next){
@@ -102,6 +286,31 @@ function ensureAuthenticated(req, res, next){
 		res.redirect('/users/login');
 	}
 }
+router.get('/details/:id',function(req,res)
+{
 
+Details.findOne({username:req.params.id},function(err,user)
+
+{
+if(err)
+{
+	return next(err);
+}
+
+
+res.render('info',{info:user.details});
+
+
+
+
+});
+
+
+
+
+
+
+
+});
 
 module.exports = router;

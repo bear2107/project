@@ -1,0 +1,36 @@
+
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+<table>
+
+<th>Code Scanned</th>
+<th>Timestamp</th>
+<th>Success</th>
+<th>Place</th>
+{{#each info}}
+<tr>
+	<td>{{codescanned}}</td>
+	<td>{{timestamp}}</td>
+	<td>{{success}}</td>
+	<td>{{place}}</td>
+</tr>
+
+{{/each}}
+</body>
