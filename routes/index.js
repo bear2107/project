@@ -3,7 +3,7 @@ var router = express.Router();
 var hfcutil=require('../backend/chaincode');
 // Get Homepage
 var moment=require('moment');
-var chaincodeID="53e365163b5acfb80ab50a6ff4440d7aa6b5b120458d54ed764c71f3fb7cf663";
+var chaincodeID="e303eb7fd5d8f15da04bac1aa7826dc7aeeca0daf38450a18e10c8c9a3d5e539";
 var util=require('util');
 var User = require('../models/user');
 var random=(Math.floor(Math.random()))%5+1;
@@ -75,7 +75,7 @@ router.post('/transactions', function(req, res) {
 	console.log("che"+che);
   var area=req.body.area;
 	// Construct the invoke request
-	hfcUtil.enrolluser(req.user.username);
+	hfcutil.enrolluser(req.user.username);
 	//count(req.user.username);
 	//chaincodeID=hfcutil.chains();
 var invokeRequest = {
