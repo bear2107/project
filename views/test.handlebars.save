@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Instascan</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<style media="screen" type="text/css">
@@ -46,7 +47,7 @@
       });
       Instascan.Camera.getCameras().then(function (cameras) {
         if (cameras.length > 0) {
-          scanner.start(cameras[1]);
+          scanner.start(cameras[0]);
         } else {
           console.error('No cameras found.');
         }

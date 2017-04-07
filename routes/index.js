@@ -3,7 +3,7 @@ var router = express.Router();
 var hfcutil=require('../backend/chaincode');
 // Get Homepage
 var moment=require('moment');
-var chaincodeID="53e365163b5acfb80ab50a6ff4440d7aa6b5b120458d54ed764c71f3fb7cf663";
+var chaincodeID="4efe0638ba54882d748157a5b209e56e489f4fa1ffb6ec42f50a5a16043ec36b";
 var util=require('util');
 var User = require('../models/user');
 var random=(Math.floor(Math.random()))%5+1;
@@ -26,7 +26,7 @@ router.get('/', ensureAuthenticated, function(req, res){
 	hfcutil.enrolluser(req.user.username);
 	//chaincodeID=hfcutil.chaincodeID;
 	//console.log(chaincodeID);
-Random.findOneAndUpdate(
+	Random.findOneAndUpdate(
 		{username:req.user.username},
 		{$set:{"start":Math.floor(Math.random()*5)+1, "count":0,"timestamp":new Date()}},
 		{safe: true, upsert: true, new : true},
@@ -54,7 +54,7 @@ router.get('/view', function(req, res){
 
 			res.render('view', {users:docs});
 			//console.log(users[0]);
-			
+
 
 
 	}
@@ -73,9 +73,9 @@ router.post('/transactions', function(req, res) {
 //	console.log("amount"+amount);
 	var che=req.body.check;
 	console.log("che"+che);
-  var area=req.body.area;
+  	var area=req.body.area;
 	// Construct the invoke request
-	hfcUtil.enrolluser(req.user.username);
+	hfcutil.enrolluser(req.user.username);
 	//count(req.user.username);
 	//chaincodeID=hfcutil.chains();
 var invokeRequest = {

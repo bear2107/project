@@ -17,7 +17,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 250%;
+    width: 100%;
     height: 100%;
 }
 </style>
@@ -46,7 +46,7 @@
       });
       Instascan.Camera.getCameras().then(function (cameras) {
         if (cameras.length > 0) {
-          scanner.start(cameras[1]);
+          scanner.start(cameras[0]);
         } else {
           console.error('No cameras found.');
         }

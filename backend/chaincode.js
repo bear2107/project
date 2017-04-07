@@ -33,7 +33,7 @@ var chain = hfc.newChain("testChain");
 //
 // Configure the chain settings
 //
-var deployed=2;
+var deployed=1;
 
 // Set the location of the KeyValueStore
 console.log("Setting keyValStore location to: " + SDK_KEYSTORE);
