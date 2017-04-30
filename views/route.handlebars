@@ -1,0 +1,52 @@
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+<table>
+
+<th>Place To Be guarded</th>
+<th>Time Allowed</th>
+
+{{#each users}}
+<tr>
+	<td>{{place1}}</td>
+	<td>{{time1}}</td>
+	
+</tr>
+<tr>
+	<td>{{place2}}</td>
+	<td>{{time2}}</td>
+	
+</tr>
+<tr>
+	<td>{{place3}}</td>
+	<td>{{time3}}</td>
+	
+</tr>
+<tr>
+	<td>{{place4}}</td>
+	<td>{{time4}}</td>
+	
+</tr>
+<tr>
+	<td>{{place5}}</td>
+	<td>{{time5}}</td>
+	
+</tr>
+{{/each}}
+</body>

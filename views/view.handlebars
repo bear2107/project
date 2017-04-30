@@ -20,12 +20,15 @@ tr:nth-child(even) {
 <body>
 <table>
 <th>Guard</th>
-<th>Count</th>
-
+<th>Successful Scan</th>
+<th>Unsuccessful Scan</th>
+<th>Route Followed</th>
 {{#each users}}
 <tr>
 	<td>{{username}}</td>
-	<td><a href= '/details/{{username}}'>Click here for details</a></td>
+	<td><a href= '/details/{{username}}'>Click</a></td>
+	<td><a href= '/detailss/{{username}}'>Click</a></td>
+    <td><a href='/route/{{username}}'>Click</a></td>
 </tr>
 
 {{/each}}

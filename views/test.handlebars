@@ -32,6 +32,10 @@
       let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
       scanner.addListener('scan', function (content) {
         var x="{{{checkqrs}}}";
+        var y=""
+        var a=""
+        var z=""
+        var w=""
         $.ajax({
             type: "post",
             url: '/transactions',
@@ -39,14 +43,20 @@
             datatype: "json",
             success: function(result) {
                console.log("Status: " + result.status);
+               y=result.timestamp;
+               a=content; 
+               z=result.place;
+               w=result.success;
+               a='aaa]'+y+']'+z+']'+w;
+                     window.location='/lasted/'+a;
+              //window.location='/lasted'+y+'/'+a+'/'+z+'/'+w;
             }
         });
-      window.location='/last'
-        console.log(content+"hjj"+x);
+      console.log(content+"hjj"+x);
       });
       Instascan.Camera.getCameras().then(function (cameras) {
         if (cameras.length > 0) {
-          scanner.start(cameras[1]);
+          scanner.start(cameras[0]);
         } else {
           console.error('No cameras found.');
         }

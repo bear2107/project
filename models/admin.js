@@ -14,7 +14,12 @@ var QrSchema = mongoose.Schema({
 	}
 });
 //QrSchema.plugin(random, { path: 'r' }); 
+module.exports.createQr = function(newUser, callback){
 
+	        newUser.save(callback);
+	    
+	
+}
 var Qr = module.exports = mongoose.model('Qr', QrSchema);
 
 /*module.exports.createUser = function(newUser, callback){

@@ -14,5 +14,10 @@ var QrSchema = mongoose.Schema({
 		type: String
 	}
 });
+module.exports.createUser = function(newUser, callback){
 
+	        newUser.save(callback);
+	    
+	
+}
 var QrCode = module.exports = mongoose.model('QrCode', QrSchema);
